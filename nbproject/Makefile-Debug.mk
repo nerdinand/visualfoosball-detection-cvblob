@@ -35,8 +35,10 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/imageParams.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/testcvblob.o \
+	${OBJECTDIR}/testcvblobstill.o \
+	${OBJECTDIR}/testcvblobvideo.o \
 	${OBJECTDIR}/testfps.o
 
 
@@ -54,82 +56,92 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/lib -L/usr/local/lib -L/usr/local/include/lib /usr/local/lib/libopencv_calib3d.so /usr/local/lib/libopencv_contrib.so /usr/local/lib/libopencv_core.so /usr/local/lib/libopencv_features2d.so /usr/local/lib/libopencv_gpu.so /usr/local/lib/libopencv_highgui.so /usr/local/lib/libopencv_imgproc.so /usr/local/lib/libopencv_legacy.so /usr/local/lib/libopencv_ml.so /usr/local/lib/libopencv_nonfree.so /usr/local/lib/libopencv_objdetect.so /usr/local/lib/libopencv_photo.so /usr/local/lib/libopencv_stitching.so /usr/local/lib/libopencv_ts.so /usr/local/lib/libopencv_video.so /usr/local/lib/libopencv_videostab.so /usr/local/lib/libswresample.a /usr/local/lib/libswscale.a /usr/local/lib/libv4l1.so /usr/local/lib/libv4l2.so /usr/local/lib/libv4lconvert.so /usr/local/lib/libx264.so /usr/local/lib/libv4l/v4l1compat.so /usr/local/lib/libv4l/v4l2convert.so /usr/local/lib/python2.7/dist-packages/cv2.so ../../cvblob/lib/libcvblob.so
+LDLIBSOPTIONS=-L/usr/lib -L/usr/local/lib -L/usr/local/include/lib /usr/local/lib/libopencv_calib3d.so /usr/local/lib/libopencv_contrib.so /usr/local/lib/libopencv_core.so /usr/local/lib/libopencv_features2d.so /usr/local/lib/libopencv_gpu.so /usr/local/lib/libopencv_highgui.so /usr/local/lib/libopencv_imgproc.so /usr/local/lib/libopencv_legacy.so /usr/local/lib/libopencv_ml.so /usr/local/lib/libopencv_nonfree.so /usr/local/lib/libopencv_objdetect.so /usr/local/lib/libopencv_photo.so /usr/local/lib/libopencv_stitching.so /usr/local/lib/libopencv_ts.a /usr/local/lib/libopencv_video.so /usr/local/lib/libopencv_videostab.so /usr/local/lib/libswresample.a /usr/local/lib/libswscale.a /usr/local/lib/libv4l1.so /usr/local/lib/libv4l2.so /usr/local/lib/libv4lconvert.so /usr/local/lib/libx264.so /usr/local/lib/libv4l/v4l1compat.so /usr/local/lib/libv4l/v4l2convert.so /usr/local/lib/python2.7/dist-packages/cv2.so ../../cvblob/lib/libcvblob.so
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${TESTDIR}/TestFiles/f1
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_calib3d.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_calib3d.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_contrib.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_contrib.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_core.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_core.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_features2d.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_features2d.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_gpu.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_gpu.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_highgui.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_highgui.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_imgproc.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_imgproc.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_legacy.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_legacy.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_ml.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_ml.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_nonfree.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_nonfree.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_objdetect.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_objdetect.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_photo.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_photo.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_stitching.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_stitching.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_ts.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_ts.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_video.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_video.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libopencv_videostab.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_videostab.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libswresample.a
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libswresample.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libswscale.a
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libswscale.a
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libv4l1.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l1.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libv4l2.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l2.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libv4lconvert.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4lconvert.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libx264.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libx264.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libv4l/v4l1compat.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l/v4l1compat.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/libv4l/v4l2convert.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l/v4l2convert.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: /usr/local/lib/python2.7/dist-packages/cv2.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/python2.7/dist-packages/cv2.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: ../../cvblob/lib/libcvblob.so
+${TESTDIR}/TestFiles/f1: ../../cvblob/lib/libcvblob.so
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv: ${OBJECTFILES}
-	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv ${OBJECTFILES} ${LDLIBSOPTIONS}
+${TESTDIR}/TestFiles/f1: ${OBJECTFILES}
+	${MKDIR} -p ${TESTDIR}/TestFiles
+	${LINK.cc} -o ${TESTDIR}/TestFiles/f1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/imageParams.o: nbproject/Makefile-${CND_CONF}.mk imageParams.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/imageParams.o imageParams.cpp
 
 ${OBJECTDIR}/main.o: nbproject/Makefile-${CND_CONF}.mk main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/main.o main.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
-${OBJECTDIR}/testcvblob.o: nbproject/Makefile-${CND_CONF}.mk testcvblob.cpp 
+${OBJECTDIR}/testcvblobstill.o: nbproject/Makefile-${CND_CONF}.mk testcvblobstill.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/testcvblob.o testcvblob.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/testcvblobstill.o testcvblobstill.cpp
+
+${OBJECTDIR}/testcvblobvideo.o: nbproject/Makefile-${CND_CONF}.mk testcvblobvideo.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/testcvblobvideo.o testcvblobvideo.cpp
 
 ${OBJECTDIR}/testfps.o: nbproject/Makefile-${CND_CONF}.mk testfps.cpp 
 	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -MMD -MP -MF $@.d -o ${OBJECTDIR}/testfps.o testfps.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/testfps.o testfps.cpp
 
 # Subprojects
 .build-subprojects:
@@ -137,7 +149,7 @@ ${OBJECTDIR}/testfps.o: nbproject/Makefile-${CND_CONF}.mk testfps.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/cppappopencv
+	${RM} ${TESTDIR}/TestFiles/f1
 
 # Subprojects
 .clean-subprojects:

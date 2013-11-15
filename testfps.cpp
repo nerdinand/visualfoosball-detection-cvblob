@@ -11,14 +11,19 @@
 #include <stdio.h>
 
 #include "testfps.hpp"
+#include "imageParams.h"
 
 using namespace std;
 
-int TestFpsNoVideo(int captureWidth, int captureHeight) {
+const int webcamID = 1;
+
+// Test 1: OpenCV (w/ webcam feed)
+
+int TestFpsNoVideo(struct imageParams params) {
     IplImage* frame;
-    CvCapture* capture = cvCreateCameraCapture(-1);
-    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, captureWidth);
-    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, captureHeight);
+    CvCapture* capture = cvCreateCameraCapture(webcamID);
+    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
+    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
 
     time_t start, end;
     double fps, sec;
@@ -50,15 +55,17 @@ int TestFpsNoVideo(int captureWidth, int captureHeight) {
     }
 
     cvReleaseCapture(&capture);
-    
+
     return 0;
 }
 
-int TestFpsShowVideo(int captureWidth, int captureHeight) {
+// Test 2: OpenCV (w/o webcam feed)
+
+int TestFpsShowVideo(struct imageParams params) {
     IplImage* frame;
-    CvCapture* capture = cvCreateCameraCapture(-1);
-    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, captureWidth);
-    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, captureHeight);
+    CvCapture* capture = cvCreateCameraCapture(webcamID);
+    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
+    cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
     cvNamedWindow("Webcam Preview", CV_WINDOW_AUTOSIZE);
     cvMoveWindow("Webcam Preview", 300, 200);
 
@@ -95,6 +102,6 @@ int TestFpsShowVideo(int captureWidth, int captureHeight) {
 
     cvDestroyWindow("Webcam Preview");
     cvReleaseCapture(&capture);
-    
+
     return 0;
 }
