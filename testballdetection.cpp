@@ -58,7 +58,7 @@ int BallDetection(struct imageParams params) {
     int startIndex = 1;
     int endIndex = 217;
 
-    int showIndex = 185;
+    int showIndex = 186;
 
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
@@ -102,7 +102,7 @@ int BallDetection(struct imageParams params) {
         labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
 
         result = cvLabel(segmentated, labelImg, blobs);
-        cvFilterByArea(blobs, 400, 2000);
+        cvFilterByArea(blobs, 200, 2000);
 
         if (i == showIndex) {
         cvRenderBlobs(labelImg, blobs, frame, frame,
