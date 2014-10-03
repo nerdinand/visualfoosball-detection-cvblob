@@ -121,8 +121,7 @@ int BallDetection(struct imageParams params) {
         cvFilterByArea(blobs, 200, 2000);
 
         if (i == showIndex && showIndex != -1) {
-        cvRenderBlobs(labelImg, blobs, frame, frame,
-                CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
+            cvRenderBlobs(labelImg, blobs, frame, frame, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
 
         lastBlob = NULL;
