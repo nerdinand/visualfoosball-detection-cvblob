@@ -30,6 +30,19 @@ int BallDetection(struct imageParams params) {
     params.highG    = 150;
     params.highB    = 120;
 
+    // private static final Scalar ballHSVMin = new Scalar(10.0, 172.0, 140.0, 0.0);
+    // private static final Scalar ballHSVMax = new Scalar(15.0, 215.0, 232.0, 0.0);
+
+    int lowH = 10;
+    int lowS = 172;
+    int lowV = 140;
+    int highH = 15;
+    int highS = 215;
+    int highV = 232;
+
+    CvScalar minHSV = cvScalar(lowH, lowS, lowV);
+    CvScalar maxHSV = cvScalar(highH, highS, highV);
+
     cout << endl << "colors: low: " << params.lowR << " " << params.lowG << " " << params.lowB << " " << " high: " << params.highR << " " << params.highG << " " << params.highB << " " << endl;
 
     // cvNamedWindow("Processed Image", CV_WINDOW_AUTOSIZE);
@@ -45,15 +58,13 @@ int BallDetection(struct imageParams params) {
     int startIndex = 1;
     int endIndex = 217;
 
-    for (int i = startIndex; i <= endIndex; i++) {
-        int showIndex = 110;
+    int showIndex = 185;
 
+    for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
         ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
         image = cvLoadImage(ss.str().c_str());
         cout << ss.str() << endl;
-
-        // image = "frames/image-" << std::setw(3) << std::setfill('0') << 1 << ".png" << std::endl;
 
         if (image == NULL) {
             cout << endl << "No image found?";
@@ -69,13 +80,14 @@ int BallDetection(struct imageParams params) {
         //         << image->imageSize / 1024 << endl << endl;
 
         frame = cvCreateImage(imgSize, image->depth, image->nChannels);
-
         cvConvertScale(image, frame, 1, 0);
+
+        cvtColorImage = cvCreateImage(imgSize, 8, 3);
+        cvCvtColor(image, cvtColorImage, cv::COLOR_BGR2HSV);
 
         segmentated = cvCreateImage(imgSize, 8, 1);
 
-        cvInRangeS(image, CV_RGB(params.lowR, params.lowG, params.lowB),
-                CV_RGB(params.highR, params.highG, params.highB), segmentated);
+        cvInRangeS(cvtColorImage, minHSV, maxHSV, segmentated);
 
         if (i == showIndex) {
             cvShowImage("In range", segmentated);
@@ -90,7 +102,7 @@ int BallDetection(struct imageParams params) {
         labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
 
         result = cvLabel(segmentated, labelImg, blobs);
-        cvFilterByArea(blobs, 500, 2000);
+        cvFilterByArea(blobs, 400, 2000);
 
         if (i == showIndex) {
         cvRenderBlobs(labelImg, blobs, frame, frame,
@@ -126,6 +138,7 @@ int BallDetection(struct imageParams params) {
 
         cvReleaseImage(&labelImg);
         cvReleaseImage(&segmentated);
+        cvReleaseImage(&cvtColorImage);
         cvReleaseImage(&frame);
         cvReleaseImage(&image);
         // cvReleaseImage(&colorRange);
