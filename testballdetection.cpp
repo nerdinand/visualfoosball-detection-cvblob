@@ -14,7 +14,7 @@ using namespace std;
 int BallDetection(struct imageParams params) {
     /// Variables /////////////////////////////////////////////////////////
     CvSize imgSize;
-    IplImage *image, *frame, *segmentated, *labelImg, *colorRange;
+    IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg, *colorRange;
     CvBlobs blobs;
 
     unsigned int result = 0;
@@ -42,8 +42,10 @@ int BallDetection(struct imageParams params) {
     // image = cvLoadImage("frames/image-001.png");
 
     int numSuccessful = 0;
+    int startIndex = 1;
+    int endIndex = 217;
 
-    for (int i=1; i <= 217; i++) {
+    for (int i = startIndex; i <= endIndex; i++) {
         int showIndex = 110;
 
         stringstream ss;
@@ -129,7 +131,7 @@ int BallDetection(struct imageParams params) {
         // cvReleaseImage(&colorRange);
     }
 
-    cout << "Successful: " << numSuccessful << endl;
+    cout << "Successful: " << numSuccessful <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
 
     while (!quit) {
         char k = cvWaitKey(10)&0xff;
