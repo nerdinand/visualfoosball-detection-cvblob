@@ -14,24 +14,12 @@ using namespace std;
 int BallDetection(struct imageParams params) {
     /// Variables /////////////////////////////////////////////////////////
     CvSize imgSize;
-    IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg, *colorRange;
+    IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg;
     CvBlobs blobs;
 
     unsigned int result = 0;
     bool quit = false;
     ///////////////////////////////////////////////////////////////////////
-
-    // orig: 232 127 75
-
-    params.lowR     = 180;
-    params.lowG     = 100;
-    params.lowB     = 50;
-    params.highR    = 255;
-    params.highG    = 150;
-    params.highB    = 120;
-
-    // private static final Scalar ballHSVMin = new Scalar(10.0, 172.0, 140.0, 0.0);
-    // private static final Scalar ballHSVMax = new Scalar(15.0, 215.0, 232.0, 0.0);
 
     int lowH = 10;
     int lowS = 172;
@@ -42,8 +30,6 @@ int BallDetection(struct imageParams params) {
 
     CvScalar minHSV = cvScalar(lowH, lowS, lowV);
     CvScalar maxHSV = cvScalar(highH, highS, highV);
-
-    cout << endl << "colors: low: " << params.lowR << " " << params.lowG << " " << params.lowB << " " << " high: " << params.highR << " " << params.highG << " " << params.highB << " " << endl;
 
     // cvNamedWindow("Processed Image", CV_WINDOW_AUTOSIZE);
     // cvMoveWindow("Processed Image", 750, 100);
@@ -64,6 +50,8 @@ int BallDetection(struct imageParams params) {
 
     clock_t totalBegin = clock();
 
+    CvBlob* lastBlob = NULL;
+
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
         ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
@@ -77,7 +65,6 @@ int BallDetection(struct imageParams params) {
 
         clock_t begin = clock();
 
-        imgSize = cvGetSize(image);
         // cout << endl << "Width (pixels): " << image->width;
         // cout << endl << "Height (pixels): " << image->height;
         // cout << endl << "Channels: " << image->nChannels;
@@ -85,6 +72,28 @@ int BallDetection(struct imageParams params) {
         // cout << endl << "Image Data Size (kB): "
         //         << image->imageSize / 1024 << endl << endl;
 
+        imgSize = cvGetSize(image);
+
+        cvResetImageROI(image);
+
+        CvRect regionOfInterest;
+        if (lastBlob != NULL) {
+            long x = (long) (lastBlob->centroid.x - 100);
+            long y = (long) (lastBlob->centroid.y - 100);
+
+            x = x > imgSize.width ? imgSize.width : x;
+            y = y > imgSize.height ? imgSize.height : y;
+            x = x < 0 ? 0 : x;
+            y = y < 0 ? 0 : y;
+
+            regionOfInterest = cvRect(x, y, 200, 200);
+
+            cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
+
+            cvSetImageROI(image, regionOfInterest);
+        }
+
+        imgSize = cvGetSize(image);
         frame = cvCreateImage(imgSize, image->depth, image->nChannels);
         cvConvertScale(image, frame, 1, 0);
 
@@ -115,11 +124,18 @@ int BallDetection(struct imageParams params) {
                 CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
 
+        lastBlob = NULL;
         int count = 0;
         for (CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
         {
-          cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
-          count++;
+            lastBlob = it->second;
+
+            regionOfInterest = cvGetImageROI(image);
+            lastBlob->centroid.x += regionOfInterest.x;
+            lastBlob->centroid.y += regionOfInterest.y;
+
+            cout << "Blob #" << lastBlob->label << ": Area=" << lastBlob->area << ", Centroid=(" << lastBlob->centroid.x << ", " << lastBlob->centroid.y << ")" << endl;
+            count++;
         }
 
         if (count == 1) {
@@ -140,8 +156,6 @@ int BallDetection(struct imageParams params) {
         //         CV_RGB(params.highR, params.highG, params.highB), CV_FILLED);
         // cvShowImage("Color Range", colorRange);
 
-        cvReleaseBlobs(blobs);
-
         cvReleaseImage(&labelImg);
         cvReleaseImage(&segmentated);
         cvReleaseImage(&cvtColorImage);
@@ -150,14 +164,17 @@ int BallDetection(struct imageParams params) {
         // cvReleaseImage(&colorRange);
 
         clock_t end = clock();
-        calcTime += double(end - begin) / CLOCKS_PER_SEC;
+        calcTime += double(end - begin);
     }
+
+    cvReleaseBlobs(blobs);
+
 
     clock_t totalEnd = clock();
     double totalTime = double(totalEnd - totalBegin) / CLOCKS_PER_SEC;
 
     cout << "Successful: " << numSuccessful <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
-    cout << "Calc time: " << calcTime << endl;
+    cout << "Calc time: " << calcTime / CLOCKS_PER_SEC << endl;
     cout << "Total time: " << totalTime << endl;
 
     while (!quit) {
