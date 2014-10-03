@@ -58,7 +58,11 @@ int BallDetection(struct imageParams params) {
     int startIndex = 1;
     int endIndex = 217;
 
-    int showIndex = 186;
+    int showIndex = -1;
+
+    double calcTime = 0;
+
+    clock_t totalBegin = clock();
 
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
@@ -70,6 +74,8 @@ int BallDetection(struct imageParams params) {
             cout << endl << "No image found?";
             return -1;
         }
+
+        clock_t begin = clock();
 
         imgSize = cvGetSize(image);
         // cout << endl << "Width (pixels): " << image->width;
@@ -89,13 +95,13 @@ int BallDetection(struct imageParams params) {
 
         cvInRangeS(cvtColorImage, minHSV, maxHSV, segmentated);
 
-        if (i == showIndex) {
+        if (i == showIndex && showIndex != -1) {
             cvShowImage("In range", segmentated);
         }
 
         cvSmooth(segmentated, segmentated, CV_MEDIAN, 7, 7);
 
-        if (i == showIndex) {
+        if (i == showIndex && showIndex != -1) {
             cvShowImage("Smoothed", segmentated);
         }
 
@@ -104,7 +110,7 @@ int BallDetection(struct imageParams params) {
         result = cvLabel(segmentated, labelImg, blobs);
         cvFilterByArea(blobs, 200, 2000);
 
-        if (i == showIndex) {
+        if (i == showIndex && showIndex != -1) {
         cvRenderBlobs(labelImg, blobs, frame, frame,
                 CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
@@ -120,7 +126,7 @@ int BallDetection(struct imageParams params) {
             numSuccessful++;
         }
 
-        if (i == showIndex) {
+        if (i == showIndex && showIndex != -1) {
             cvShowImage("Original Image", frame);
             cvShowImage("Processed Image", segmentated);
         }
@@ -142,9 +148,17 @@ int BallDetection(struct imageParams params) {
         cvReleaseImage(&frame);
         cvReleaseImage(&image);
         // cvReleaseImage(&colorRange);
+
+        clock_t end = clock();
+        calcTime += double(end - begin) / CLOCKS_PER_SEC;
     }
 
+    clock_t totalEnd = clock();
+    double totalTime = double(totalEnd - totalBegin) / CLOCKS_PER_SEC;
+
     cout << "Successful: " << numSuccessful <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
+    cout << "Calc time: " << calcTime << endl;
+    cout << "Total time: " << totalTime << endl;
 
     while (!quit) {
         char k = cvWaitKey(10)&0xff;
