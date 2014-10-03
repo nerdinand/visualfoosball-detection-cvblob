@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/testcvblobstill.o \
 	${OBJECTDIR}/testcvblobvideo.o \
+	${OBJECTDIR}/testballdetection.o \
 	${OBJECTDIR}/testfps.o
 
 
@@ -127,6 +128,11 @@ ${OBJECTDIR}/testcvblobvideo.o: nbproject/Makefile-${CND_CONF}.mk testcvblobvide
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/testcvblobvideo.o testcvblobvideo.cpp
+
+${OBJECTDIR}/testballdetection.o: nbproject/Makefile-${CND_CONF}.mk testballdetection.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -I/usr/local/include/opencv -I. -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/testballdetection.o testballdetection.cpp
 
 ${OBJECTDIR}/testfps.o: nbproject/Makefile-${CND_CONF}.mk testfps.cpp 
 	${MKDIR} -p ${OBJECTDIR}

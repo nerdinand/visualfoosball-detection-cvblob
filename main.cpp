@@ -1,4 +1,4 @@
-/* 
+/*
  * File:        main.cpp
  * Author:      Gary Stafford
  * Description: Program entry point
@@ -14,6 +14,7 @@
 #include "testfps.hpp"
 #include "testcvblobstill.hpp"
 #include "testcvblobvideo.hpp"
+#include "testballdetection.hpp"
 #include "imageParams.h"
 
 using namespace std;
@@ -33,23 +34,28 @@ int main(int argc, char* argv[]) {
         inputParams.highB = strtol(argv[9], NULL, 0);
 
     } else { // user did not input parameters with call
-        cout << endl << "Demonstrations/Tests: " << endl;
-        cout << endl << "(1) Test OpenCV - Show Webcam" << endl;
-        cout << endl << "(2) Test OpenCV - No Webcam" << endl;
-        cout << endl << "(3) Test cvBlob - Show Image" << endl;
-        cout << endl << "(4) Test cvBlob - No Image" << endl;
-        cout << endl << "(5) Test Blob Tracking - Show Webcam" << endl;
-        cout << endl << "(6) Test Blob Tracking - No Webcam" << endl;
-        cout << endl << "Input test # (1-6): ";
-        cin >> inputParams.captureMethod;
+        if (argc == 2) {
+            inputParams.captureMethod = strtol(argv[1], NULL, 0);
+        } else {
+            cout << endl << "Demonstrations/Tests: " << endl;
+            cout << endl << "(1) Test OpenCV - Show Webcam" << endl;
+            cout << endl << "(2) Test OpenCV - No Webcam" << endl;
+            cout << endl << "(3) Test cvBlob - Show Image" << endl;
+            cout << endl << "(4) Test cvBlob - No Image" << endl;
+            cout << endl << "(5) Test Blob Tracking - Show Webcam" << endl;
+            cout << endl << "(6) Test Blob Tracking - No Webcam" << endl;
+            cout << endl << "(7) Ball Tracking" << endl;
+            cout << endl << "Input test # (1-6): ";
+            cin >> inputParams.captureMethod;
+        }
 
-        if (inputParams.captureMethod < 1 || inputParams.captureMethod > 6) {
+        if (inputParams.captureMethod < 1 || inputParams.captureMethod > 7) {
             cout << endl << "Test # incorrect" << endl;
             return -1;
         }
 
         // test 3 and 4 don't require width and height parameters
-        if (inputParams.captureMethod != 3 && inputParams.captureMethod != 4) {
+        if (inputParams.captureMethod != 3 && inputParams.captureMethod != 4 && inputParams.captureMethod != 7) {
             cout << endl << "Input capture width (1 - 1920 pixels): ";
             cin >> inputParams.captureWidth;
             cout << endl << "Input capture height (1 - 1920 pixels): ";
@@ -68,7 +74,7 @@ int main(int argc, char* argv[]) {
         }
 
         // test 3 and 4 don't require width and height parameters
-        if (inputParams.captureMethod != 1 && inputParams.captureMethod != 2) {
+        if (inputParams.captureMethod != 1 && inputParams.captureMethod != 2 && inputParams.captureMethod != 7) {
             cout << endl << "Input color range low R (0 - 255): ";
             cin >> inputParams.lowR;
             cout << endl << "Input color range low G (0 - 255): ";
@@ -118,6 +124,7 @@ int main(int argc, char* argv[]) {
     switch (inputParams.captureMethod) {
         case 1:
             TestFpsShowVideo(inputParams);
+            break;
         case 2:
             TestFpsNoVideo(inputParams);
             break;
@@ -133,6 +140,11 @@ int main(int argc, char* argv[]) {
         case 6:
             DetectBlobsNoVideo(inputParams);
             break;
+
+        case 7:
+            BallDetection(inputParams);
+            break;
+
         default:
             break;
     }
