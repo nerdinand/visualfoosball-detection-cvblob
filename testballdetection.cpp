@@ -23,8 +23,8 @@ int BallDetection(struct imageParams params) {
 
     // orig: 232 127 75
 
-    params.lowR     = 200;
-    params.lowG     = 110;
+    params.lowR     = 180;
+    params.lowG     = 100;
     params.lowB     = 50;
     params.highR    = 255;
     params.highG    = 150;
@@ -41,8 +41,10 @@ int BallDetection(struct imageParams params) {
 
     // image = cvLoadImage("frames/image-001.png");
 
+    int numSuccessful = 0;
+
     for (int i=1; i <= 217; i++) {
-        int showIndex = 39;
+        int showIndex = 110;
 
         stringstream ss;
         ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
@@ -93,9 +95,15 @@ int BallDetection(struct imageParams params) {
                 CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
 
+        int count = 0;
         for (CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
         {
           cout << "Blob #" << it->second->label << ": Area=" << it->second->area << ", Centroid=(" << it->second->centroid.x << ", " << it->second->centroid.y << ")" << endl;
+          count++;
+        }
+
+        if (count == 1) {
+            numSuccessful++;
         }
 
         if (i == showIndex) {
@@ -120,6 +128,8 @@ int BallDetection(struct imageParams params) {
         cvReleaseImage(&image);
         // cvReleaseImage(&colorRange);
     }
+
+    cout << "Successful: " << numSuccessful << endl;
 
     while (!quit) {
         char k = cvWaitKey(10)&0xff;
