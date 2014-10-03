@@ -1,11 +1,11 @@
-/* 
+/*
  * File:        testfps.cpp
  * Author:      Gary Stafford
  * Description: Test the fps of a webcam using OpenCV
  * Created:     February 3, 2013
  */
 
-#include <cv.h>    
+#include <cv.h>
 #include <highgui.h>
 #include <time.h>
 #include <stdio.h>
@@ -15,13 +15,21 @@
 
 using namespace std;
 
-const int webcamID = 1;
+// const int webcamID = 1;
 
 // Test 1: OpenCV (w/ webcam feed)
 
 int TestFpsNoVideo(struct imageParams params) {
     IplImage* frame;
-    CvCapture* capture = cvCreateCameraCapture(webcamID);
+    CvCapture* capture;
+
+    cout << "Getting capture" << endl;
+    if ((capture = cvCaptureFromCAM(0)) == NULL)
+    {
+        std::cerr << "!!! ERROR: vCaptureFromCAM No camera found\n";
+        return -1;
+    }
+
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
 
@@ -63,7 +71,15 @@ int TestFpsNoVideo(struct imageParams params) {
 
 int TestFpsShowVideo(struct imageParams params) {
     IplImage* frame;
-    CvCapture* capture = cvCreateCameraCapture(webcamID);
+    CvCapture* capture;
+
+    cout << "Getting capture" << endl;
+    if ((capture = cvCaptureFromCAM(0)) == NULL)
+    {
+        std::cerr << "!!! ERROR: vCaptureFromCAM No camera found\n";
+        return -1;
+    }
+
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
     cvNamedWindow("Webcam Preview", CV_WINDOW_AUTOSIZE);

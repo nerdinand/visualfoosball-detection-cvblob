@@ -56,63 +56,53 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/usr/lib -L/usr/local/lib -L/usr/local/include/lib /usr/local/lib/libopencv_calib3d.so /usr/local/lib/libopencv_contrib.so /usr/local/lib/libopencv_core.so /usr/local/lib/libopencv_features2d.so /usr/local/lib/libopencv_gpu.so /usr/local/lib/libopencv_highgui.so /usr/local/lib/libopencv_imgproc.so /usr/local/lib/libopencv_legacy.so /usr/local/lib/libopencv_ml.so /usr/local/lib/libopencv_nonfree.so /usr/local/lib/libopencv_objdetect.so /usr/local/lib/libopencv_photo.so /usr/local/lib/libopencv_stitching.so /usr/local/lib/libopencv_ts.a /usr/local/lib/libopencv_video.so /usr/local/lib/libopencv_videostab.so /usr/local/lib/libswresample.a /usr/local/lib/libswscale.a /usr/local/lib/libv4l1.so /usr/local/lib/libv4l2.so /usr/local/lib/libv4lconvert.so /usr/local/lib/libx264.so /usr/local/lib/libv4l/v4l1compat.so /usr/local/lib/libv4l/v4l2convert.so /usr/local/lib/python2.7/dist-packages/cv2.so ../../cvblob/lib/libcvblob.so
+LDLIBSOPTIONS=-L/usr/lib -L/usr/local/lib -L/usr/local/include/lib /usr/local/lib/libopencv_calib3d.dylib /usr/local/lib/libopencv_contrib.dylib /usr/local/lib/libopencv_core.dylib /usr/local/lib/libopencv_features2d.dylib /usr/local/lib/libopencv_gpu.dylib /usr/local/lib/libopencv_highgui.dylib /usr/local/lib/libopencv_imgproc.dylib /usr/local/lib/libopencv_legacy.dylib /usr/local/lib/libopencv_ml.dylib /usr/local/lib/libopencv_nonfree.dylib /usr/local/lib/libopencv_objdetect.dylib /usr/local/lib/libopencv_photo.dylib /usr/local/lib/libopencv_stitching.dylib /usr/local/lib/libopencv_ts.a /usr/local/lib/libopencv_video.dylib /usr/local/lib/libopencv_videostab.dylib /usr/local/lib/libswresample.a /usr/local/lib/libswscale.a /usr/local/lib/libx264.dylib /usr/local/lib/python2.7/site-packages/cv2.so ../../cvblob/lib/libcvblob.dylib
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
 	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${TESTDIR}/TestFiles/f1
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_calib3d.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_calib3d.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_contrib.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_contrib.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_core.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_core.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_features2d.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_features2d.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_gpu.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_gpu.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_highgui.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_highgui.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_imgproc.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_imgproc.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_legacy.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_legacy.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_ml.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_ml.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_nonfree.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_nonfree.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_objdetect.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_objdetect.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_photo.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_photo.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_stitching.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_stitching.dylib
 
 ${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_ts.a
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_video.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_video.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_videostab.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libopencv_videostab.dylib
 
 ${TESTDIR}/TestFiles/f1: /usr/local/lib/libswresample.a
 
 ${TESTDIR}/TestFiles/f1: /usr/local/lib/libswscale.a
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l1.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/libx264.dylib
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l2.so
+${TESTDIR}/TestFiles/f1: /usr/local/lib/python2.7/site-packages/cv2.so
 
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4lconvert.so
-
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libx264.so
-
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l/v4l1compat.so
-
-${TESTDIR}/TestFiles/f1: /usr/local/lib/libv4l/v4l2convert.so
-
-${TESTDIR}/TestFiles/f1: /usr/local/lib/python2.7/dist-packages/cv2.so
-
-${TESTDIR}/TestFiles/f1: ../../cvblob/lib/libcvblob.so
+${TESTDIR}/TestFiles/f1: ../../cvblob/lib/libcvblob.dylib
 
 ${TESTDIR}/TestFiles/f1: ${OBJECTFILES}
 	${MKDIR} -p ${TESTDIR}/TestFiles

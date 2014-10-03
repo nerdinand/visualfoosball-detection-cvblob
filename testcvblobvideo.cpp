@@ -16,13 +16,13 @@
 using namespace cvb;
 using namespace std;
 
-const int webcamID = 1;
+// const int webcamID = 1;
 
 // Test 5: Blob Tracking (w/ webcam feed)
 
 int DetectBlobsNoVideo(struct imageParams params) {
     /// Variables /////////////////////////////////////////////////////////
-    CvCapture *capture;
+    CvCapture *capture = NULL;
     CvSize imgSize;
 
     IplImage *image, *frame, *segmentated, *labelImg;
@@ -37,7 +37,14 @@ int DetectBlobsNoVideo(struct imageParams params) {
     bool quit = false;
     ///////////////////////////////////////////////////////////////////////
 
-    capture = cvCaptureFromCAM(webcamID);
+    cout << "Getting capture" << endl;
+    if ((capture = cvCaptureFromCAM(0)) == NULL)
+    {
+        std::cerr << "!!! ERROR: vCaptureFromCAM No camera found\n";
+        return -1;
+    }
+
+    // capture = cvCaptureFromCAM(webcamID);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
     cvGrabFrame(capture);
@@ -137,6 +144,13 @@ int DetectBlobsShowVideo(struct imageParams params) {
     bool quit = false;
     ///////////////////////////////////////////////////////////////////////
 
+    cout << "Getting capture" << endl;
+    if ((capture = cvCaptureFromCAM(0)) == NULL)
+    {
+        std::cerr << "!!! ERROR: vCaptureFromCAM No camera found\n";
+        return -1;
+    }
+
     cvNamedWindow("Processed Video Frames", CV_WINDOW_AUTOSIZE);
     cvMoveWindow("Processed Video Frames", 600, 100);
     cvNamedWindow("Webcam Preview", CV_WINDOW_AUTOSIZE);
@@ -144,7 +158,7 @@ int DetectBlobsShowVideo(struct imageParams params) {
     cvNamedWindow("Color Range", CV_WINDOW_AUTOSIZE);
     cvMoveWindow("Color Range", 100, 600);
 
-    capture = cvCaptureFromCAM(webcamID);
+    // capture = cvCaptureFromCAM(webcamID);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, params.captureWidth);
     cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, params.captureHeight);
     cvGrabFrame(capture);
