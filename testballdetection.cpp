@@ -21,15 +21,14 @@ int BallDetection(struct imageParams params) {
     bool quit = false;
     ///////////////////////////////////////////////////////////////////////
 
-    int lowH = 10;
-    int lowS = 172;
-    int lowV = 140;
-    int highH = 15;
-    int highS = 215;
-    int highV = 232;
+    CvScalar minBallHSV = cvScalar(10, 172, 140);
+    CvScalar maxBallHSV = cvScalar(15, 215, 232);
 
-    CvScalar minHSV = cvScalar(lowH, lowS, lowV);
-    CvScalar maxHSV = cvScalar(highH, highS, highV);
+    CvScalar minBlueHSV = cvScalar(109.0, 203.0, 0.0);
+    CvScalar maxBlueHSV = cvScalar(179.0, 255.0, 255.0);
+
+    CvScalar minRedHSV = cvScalar(0.0, 203.0, 0.0);
+    CvScalar maxRedHSV = cvScalar(9.0, 255.0, 255.0);
 
     // cvNamedWindow("Processed Image", CV_WINDOW_AUTOSIZE);
     // cvMoveWindow("Processed Image", 750, 100);
@@ -104,7 +103,7 @@ int BallDetection(struct imageParams params) {
 
         segmentated = cvCreateImage(imgSize, 8, 1);
 
-        cvInRangeS(cvtColorImage, minHSV, maxHSV, segmentated);
+        cvInRangeS(cvtColorImage, minBallHSV, maxBallHSV, segmentated);
 
         if (i == showIndex && showIndex != -1) {
             cvShowImage("In range", segmentated);
