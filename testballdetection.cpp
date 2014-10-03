@@ -52,6 +52,8 @@ int BallDetection(struct imageParams params) {
 
     CvBlob* lastBlob = NULL;
 
+    int roiSize = 100;
+
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
         ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
@@ -78,17 +80,17 @@ int BallDetection(struct imageParams params) {
 
         CvRect regionOfInterest;
         if (lastBlob != NULL) {
-            long x = (long) (lastBlob->centroid.x - 100);
-            long y = (long) (lastBlob->centroid.y - 100);
+            long x = (long) (lastBlob->centroid.x - roiSize/2);
+            long y = (long) (lastBlob->centroid.y - roiSize/2);
 
             x = x > imgSize.width ? imgSize.width : x;
             y = y > imgSize.height ? imgSize.height : y;
             x = x < 0 ? 0 : x;
             y = y < 0 ? 0 : y;
 
-            regionOfInterest = cvRect(x, y, 200, 200);
+            regionOfInterest = cvRect(x, y, roiSize, roiSize);
 
-            cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
+            // cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
 
             cvSetImageROI(image, regionOfInterest);
         }
