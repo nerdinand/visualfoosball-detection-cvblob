@@ -37,8 +37,6 @@ int BallDetection(struct imageParams params) {
     // cvNamedWindow("Color Range", CV_WINDOW_AUTOSIZE);
     // cvMoveWindow("Color Range", 100, 600);
 
-    // image = cvLoadImage("frames/image-001.png");
-
     int numSuccessful = 0;
     int startIndex = 1;
     int endIndex = 217;
@@ -147,21 +145,11 @@ int BallDetection(struct imageParams params) {
             cvShowImage("Processed Image", segmentated);
         }
 
-        // Show color range values in separate window
-        // colorRange = cvCreateImage(cvSize(200,100),8,3);
-        // cvZero(colorRange);
-        // cvRectangle(colorRange, cvPoint(0,0), cvPoint(100, 100),
-        //         CV_RGB(params.lowR, params.lowG, params.lowB), CV_FILLED);
-        // cvRectangle(colorRange, cvPoint(100,0), cvPoint(200, 100),
-        //         CV_RGB(params.highR, params.highG, params.highB), CV_FILLED);
-        // cvShowImage("Color Range", colorRange);
-
         cvReleaseImage(&labelImg);
         cvReleaseImage(&segmentated);
         cvReleaseImage(&cvtColorImage);
         cvReleaseImage(&frame);
         cvReleaseImage(&image);
-        // cvReleaseImage(&colorRange);
 
         clock_t end = clock();
         calcTime += double(end - begin);
