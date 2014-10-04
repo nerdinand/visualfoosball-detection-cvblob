@@ -16,7 +16,7 @@ On a Mac, just
 Building
 --------
 
-    git checkout git@github.com:nerdinand/visualfoosball-detection-cvblob.git
+    git clone git@github.com:nerdinand/visualfoosball-detection-cvblob.git
     cd visualfoosball-detection-cvblob
     mkdir build
     cd build
