@@ -3,15 +3,13 @@
 #include <highgui.h>
 #include <cvblob.h>
 
-#include "testballdetection.hpp"
-#include "imageParams.h"
+#include "BallDetectionTest.hpp"
+#include "ImageParams.h"
 
 using namespace cvb;
 using namespace std;
 
-// Test 7: Ball Detection
-
-int BallDetection(struct imageParams params) {
+int BallDetectionTest(struct ImageParams params) {
     /// Variables /////////////////////////////////////////////////////////
     CvSize imgSize;
     IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg;

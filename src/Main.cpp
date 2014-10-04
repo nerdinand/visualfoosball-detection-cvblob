@@ -11,16 +11,13 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "testfps.hpp"
-#include "testcvblobstill.hpp"
-#include "testcvblobvideo.hpp"
-#include "testballdetection.hpp"
-#include "imageParams.h"
+#include "BallDetectionTest.hpp"
+#include "ImageParams.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    imageParams inputParams;
+    ImageParams inputParams;
 
     if (argc == 4) { // user input parameters with call
         inputParams.captureMethod = strtol(argv[1], NULL, 0);
@@ -122,27 +119,9 @@ int main(int argc, char* argv[]) {
     }
 
     switch (inputParams.captureMethod) {
-        case 1:
-            TestFpsShowVideo(inputParams);
-            break;
-        case 2:
-            TestFpsNoVideo(inputParams);
-            break;
-        case 3:
-            DetectBlobsShowStillImage(inputParams);
-            break;
-        case 4:
-            DetectBlobsNoStillImage(inputParams);
-            break;
-        case 5:
-            DetectBlobsShowVideo(inputParams);
-            break;
-        case 6:
-            DetectBlobsNoVideo(inputParams);
-            break;
 
         case 7:
-            BallDetection(inputParams);
+            BallDetectionTest(inputParams);
             break;
 
         default:

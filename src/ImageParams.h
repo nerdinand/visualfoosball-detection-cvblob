@@ -8,7 +8,7 @@
 #ifndef IMAGEPARAMS_H
 #define	IMAGEPARAMS_H
 
-struct imageParams {
+struct ImageParams {
     int captureMethod;
     int captureWidth;
     int captureHeight;
@@ -18,7 +18,6 @@ struct imageParams {
     double highR;
     double highG;
     double highB;
-
 };
 
 #endif	/* IMAGEPARAMS_H */

@@ -5,4 +5,4 @@
  * Created on May 10, 2014, 7:48 PM
  */
 
-#include "imageParams.h"
+#include "ImageParams.h"
