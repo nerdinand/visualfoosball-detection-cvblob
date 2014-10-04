@@ -2,7 +2,7 @@
 #ifndef BALLDETECTIONTEST_HPP
 #define BALLDETECTIONTEST_HPP
 
-int BallDetectionTest(struct ImageParams params);
+int BallDetectionTest();
 
 #endif  /* BALLDETECTIONTEST_HPP */
 

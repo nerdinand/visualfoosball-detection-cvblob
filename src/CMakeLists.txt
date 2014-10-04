@@ -12,7 +12,6 @@ find_package(OpenCV REQUIRED)
 find_package(cvblob REQUIRED)
 
 set (visualfoosball-detection-cvblob_SOURCES
-  "ImageParams.cpp"
   "BallDetectionTest.cpp"
   "Main.cpp"
 )

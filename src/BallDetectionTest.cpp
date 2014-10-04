@@ -4,12 +4,11 @@
 #include <cvblob.h>
 
 #include "BallDetectionTest.hpp"
-#include "ImageParams.h"
 
 using namespace cvb;
 using namespace std;
 
-int BallDetectionTest(struct ImageParams params) {
+int BallDetectionTest() {
     /// Variables /////////////////////////////////////////////////////////
     CvSize imgSize;
     IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg;
