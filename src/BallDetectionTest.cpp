@@ -4,36 +4,19 @@
 #include <cvblob.h>
 
 #include "BallDetectionTest.hpp"
+
+#include "Config.hpp"
 #include "Util.hpp"
 
 using namespace cvb;
 using namespace std;
 
 int BallDetectionTest() {
-    /// Variables /////////////////////////////////////////////////////////
     CvSize imgSize;
     IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg;
     CvBlobs blobs;
 
     unsigned int result = 0;
-    bool quit = false;
-    ///////////////////////////////////////////////////////////////////////
-
-    CvScalar minBallHSV = cvScalar(10, 172, 140);
-    CvScalar maxBallHSV = cvScalar(15, 215, 232);
-
-    CvScalar minBlueHSV = cvScalar(109.0, 203.0, 0.0);
-    CvScalar maxBlueHSV = cvScalar(179.0, 255.0, 255.0);
-
-    CvScalar minRedHSV = cvScalar(0.0, 203.0, 0.0);
-    CvScalar maxRedHSV = cvScalar(9.0, 255.0, 255.0);
-
-    // cvNamedWindow("Processed Image", CV_WINDOW_AUTOSIZE);
-    // cvMoveWindow("Processed Image", 750, 100);
-    // cvNamedWindow("Original Image", CV_WINDOW_AUTOSIZE);
-    // cvMoveWindow("Original Image", 100, 100);
-    // cvNamedWindow("Color Range", CV_WINDOW_AUTOSIZE);
-    // cvMoveWindow("Color Range", 100, 600);
 
     int numSuccessful = 0;
     int startIndex = 1;
@@ -47,7 +30,12 @@ int BallDetectionTest() {
 
     CvBlob* lastBlob = NULL;
 
-    int roiSize = 100;
+    // cvNamedWindow("Processed Image", CV_WINDOW_AUTOSIZE);
+    // cvMoveWindow("Processed Image", 750, 100);
+    // cvNamedWindow("Original Image", CV_WINDOW_AUTOSIZE);
+    // cvMoveWindow("Original Image", 100, 100);
+    // cvNamedWindow("Color Range", CV_WINDOW_AUTOSIZE);
+    // cvMoveWindow("Color Range", 100, 600);
 
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
@@ -75,13 +63,13 @@ int BallDetectionTest() {
 
         CvRect regionOfInterest;
         if (lastBlob != NULL) {
-            long x = (long) (lastBlob->centroid.x - roiSize/2);
-            long y = (long) (lastBlob->centroid.y - roiSize/2);
+            long x = (long) (lastBlob->centroid.x - Config::ballROISize/2);
+            long y = (long) (lastBlob->centroid.y - Config::ballROISize/2);
 
             x = clamp(x, 0, imgSize.width);
             y = clamp(y, 0, imgSize.height);
 
-            regionOfInterest = cvRect(x, y, roiSize, roiSize);
+            regionOfInterest = cvRect(x, y, Config::ballROISize, Config::ballROISize);
 
             // cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
 
@@ -97,7 +85,7 @@ int BallDetectionTest() {
 
         segmentated = cvCreateImage(imgSize, 8, 1);
 
-        cvInRangeS(cvtColorImage, minBallHSV, maxBallHSV, segmentated);
+        cvInRangeS(cvtColorImage, Config::minBallHSV, Config::maxBallHSV, segmentated);
 
         if (i == showIndex && showIndex != -1) {
             cvShowImage("In range", segmentated);
@@ -112,7 +100,7 @@ int BallDetectionTest() {
         labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
 
         result = cvLabel(segmentated, labelImg, blobs);
-        cvFilterByArea(blobs, 200, 2000);
+        cvFilterByArea(blobs, Config::minBallBlobSize, Config::maxBallBlobSize);
 
         if (i == showIndex && showIndex != -1) {
             cvRenderBlobs(labelImg, blobs, frame, frame, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);

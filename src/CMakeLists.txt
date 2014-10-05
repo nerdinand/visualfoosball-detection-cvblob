@@ -13,6 +13,7 @@ find_package(cvblob REQUIRED)
 
 set (visualfoosball-detection-cvblob_SOURCES
   "BallDetectionTest.cpp"
+  "Config.cpp"
   "Main.cpp"
 )
 
