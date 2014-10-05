@@ -13,12 +13,12 @@ using namespace std;
 
 int BallDetectionTest() {
     CvSize imgSize;
-    IplImage *image, *cvtColorImage, *frame, *segmentated, *labelImg;
+    IplImage *sourceImage, *hsvImage, *colorInRangeImage, *smoothedImage, *labelImg;
     CvBlobs blobs;
 
     unsigned int result = 0;
 
-    int numSuccessful = 0;
+    int successfulFramesCount = 0;
     int startIndex = 1;
     int endIndex = 217;
 
@@ -26,7 +26,7 @@ int BallDetectionTest() {
 
     double calcTime = 0;
 
-    clock_t totalBegin = clock();
+    clock_t totalTimeBegin = clock();
 
     CvBlob* lastBlob = NULL;
 
@@ -40,15 +40,15 @@ int BallDetectionTest() {
     for (int i = startIndex; i <= endIndex; i++) {
         stringstream ss;
         ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
-        image = cvLoadImage(ss.str().c_str());
+        sourceImage = cvLoadImage(ss.str().c_str());
         cout << ss.str() << endl;
 
-        if (image == NULL) {
+        if (sourceImage == NULL) {
             cout << endl << "No image found?";
             return -1;
         }
 
-        clock_t begin = clock();
+        clock_t imageCalculationBegin = clock();
 
         // cout << endl << "Width (pixels): " << image->width;
         // cout << endl << "Height (pixels): " << image->height;
@@ -57,9 +57,9 @@ int BallDetectionTest() {
         // cout << endl << "Image Data Size (kB): "
         //         << image->imageSize / 1024 << endl << endl;
 
-        imgSize = cvGetSize(image);
+        imgSize = cvGetSize(sourceImage);
 
-        cvResetImageROI(image);
+        cvResetImageROI(sourceImage);
 
         CvRect regionOfInterest;
         if (lastBlob != NULL) {
@@ -73,79 +73,74 @@ int BallDetectionTest() {
 
             // cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
 
-            cvSetImageROI(image, regionOfInterest);
+            cvSetImageROI(sourceImage, regionOfInterest);
         }
 
-        imgSize = cvGetSize(image);
-        frame = cvCreateImage(imgSize, image->depth, image->nChannels);
-        cvConvertScale(image, frame, 1, 0);
+        imgSize = cvGetSize(sourceImage);
 
-        cvtColorImage = cvCreateImage(imgSize, 8, 3);
-        cvCvtColor(image, cvtColorImage, cv::COLOR_BGR2HSV);
+        hsvImage = cvCreateImage(imgSize, 8, 3);
+        cvCvtColor(sourceImage, hsvImage, cv::COLOR_BGR2HSV);
 
-        segmentated = cvCreateImage(imgSize, 8, 1);
-
-        cvInRangeS(cvtColorImage, Config::minBallHSV, Config::maxBallHSV, segmentated);
-
+        colorInRangeImage = cvCreateImage(imgSize, 8, 1);
+        cvInRangeS(hsvImage, Config::minBallHSV, Config::maxBallHSV, colorInRangeImage);
         if (i == showIndex && showIndex != -1) {
-            cvShowImage("In range", segmentated);
+            cvShowImage("In range", colorInRangeImage);
         }
 
-        cvSmooth(segmentated, segmentated, CV_MEDIAN, 7, 7);
-
+        smoothedImage = cvCreateImage(imgSize, 8, 1);
+        cvSmooth(colorInRangeImage, smoothedImage, CV_MEDIAN, 7, 7);
         if (i == showIndex && showIndex != -1) {
-            cvShowImage("Smoothed", segmentated);
+            cvShowImage("Smoothed", smoothedImage);
         }
 
-        labelImg = cvCreateImage(cvGetSize(frame), IPL_DEPTH_LABEL, 1);
-
-        result = cvLabel(segmentated, labelImg, blobs);
+        labelImg = cvCreateImage(cvGetSize(sourceImage), IPL_DEPTH_LABEL, 1);
+        result = cvLabel(smoothedImage, labelImg, blobs);
         cvFilterByArea(blobs, Config::minBallBlobSize, Config::maxBallBlobSize);
 
         if (i == showIndex && showIndex != -1) {
-            cvRenderBlobs(labelImg, blobs, frame, frame, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
+            cvRenderBlobs(labelImg, blobs, sourceImage, sourceImage, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
 
         lastBlob = NULL;
-        int count = 0;
+        int blobCount = 0;
         for (CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
         {
             lastBlob = it->second;
 
-            regionOfInterest = cvGetImageROI(image);
+            regionOfInterest = cvGetImageROI(sourceImage);
             lastBlob->centroid.x += regionOfInterest.x;
             lastBlob->centroid.y += regionOfInterest.y;
 
             cout << "Blob #" << lastBlob->label << ": Area=" << lastBlob->area << ", Centroid=(" << lastBlob->centroid.x << ", " << lastBlob->centroid.y << ")" << endl;
-            count++;
+            blobCount++;
         }
 
-        if (count == 1) {
-            numSuccessful++;
+        if (blobCount == 1) {
+            successfulFramesCount++;
         }
 
         if (i == showIndex && showIndex != -1) {
-            cvShowImage("Original Image", frame);
-            cvShowImage("Processed Image", segmentated);
+            cvShowImage("Original Image", sourceImage);
+            cvShowImage("Processed Image", colorInRangeImage);
         }
 
         cvReleaseImage(&labelImg);
-        cvReleaseImage(&segmentated);
-        cvReleaseImage(&cvtColorImage);
-        cvReleaseImage(&frame);
-        cvReleaseImage(&image);
+        cvReleaseImage(&smoothedImage);
+        cvReleaseImage(&colorInRangeImage);
+        cvReleaseImage(&hsvImage);
+        cvReleaseImage(&sourceImage);
 
-        clock_t end = clock();
-        calcTime += double(end - begin);
+        clock_t imageCalculationEnd = clock();
+        calcTime += double(imageCalculationEnd - imageCalculationBegin);
     }
 
     cvReleaseBlobs(blobs);
 
 
-    clock_t totalEnd = clock();
-    double totalTime = double(totalEnd - totalBegin) / CLOCKS_PER_SEC;
+    clock_t totalTimeEnd = clock();
+    double totalTime = double(totalTimeEnd - totalTimeBegin) / CLOCKS_PER_SEC;
 
-    cout << "Successful: " << numSuccessful <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
+    cout << "Successful: " << successfulFramesCount <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
     cout << "Calc time: " << calcTime / CLOCKS_PER_SEC << endl;
     cout << "Total time: " << totalTime << endl;
 
