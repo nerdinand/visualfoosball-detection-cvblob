@@ -13,7 +13,7 @@ using namespace std;
 
 int BallDetectionTest() {
     CvSize imgSize;
-    IplImage *sourceImage, *hsvImage, *colorInRangeImage, *smoothedImage, *labelImg;
+    IplImage *sourceImage, *hsvImage, *colorInRangeImage, *smoothedImage, *labelImage;
     CvBlobs blobs;
 
     unsigned int result = 0;
@@ -93,12 +93,12 @@ int BallDetectionTest() {
             cvShowImage("Smoothed", smoothedImage);
         }
 
-        labelImg = cvCreateImage(cvGetSize(sourceImage), IPL_DEPTH_LABEL, 1);
-        result = cvLabel(smoothedImage, labelImg, blobs);
+        labelImage = cvCreateImage(cvGetSize(sourceImage), IPL_DEPTH_LABEL, 1);
+        result = cvLabel(smoothedImage, labelImage, blobs);
         cvFilterByArea(blobs, Config::minBallBlobSize, Config::maxBallBlobSize);
 
         if (i == showIndex && showIndex != -1) {
-            cvRenderBlobs(labelImg, blobs, sourceImage, sourceImage, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
+            cvRenderBlobs(labelImage, blobs, sourceImage, sourceImage, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
         }
 
         lastBlob = NULL;
@@ -124,7 +124,7 @@ int BallDetectionTest() {
             cvShowImage("Processed Image", colorInRangeImage);
         }
 
-        cvReleaseImage(&labelImg);
+        cvReleaseImage(&labelImage);
         cvReleaseImage(&smoothedImage);
         cvReleaseImage(&colorInRangeImage);
         cvReleaseImage(&hsvImage);
