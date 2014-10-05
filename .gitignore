@@ -1,1 +1,15 @@
+# binary directories
 build
+bin
+
+# generated makefiles
+Makefile
+
+# cmake temporary files
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+
+# Eclipse project files
+.project
+.cproject
