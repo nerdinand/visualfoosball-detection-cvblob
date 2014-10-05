@@ -13,6 +13,9 @@ public:
 	std::unique_ptr<cvb::CvBlob> detect(std::unique_ptr<IplImage> sourceImage);
 
 	virtual ~BallDetector();
+
+private:
+	int _successfulFramesCount = 0;
 };
 
 #endif /* SRC_BALLDETECTOR_HPP_ */

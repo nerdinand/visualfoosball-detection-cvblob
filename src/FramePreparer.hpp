@@ -12,6 +12,7 @@ public:
 	std::unique_ptr<IplImage> prepare(std::unique_ptr<IplImage> sourceImage);
 
 	virtual ~FramePreparer();
+
 };
 
 #endif /* SRC_FRAMEPREPARER_HPP_ */

@@ -1,24 +1,37 @@
 
-#include "BallDetectionTest.hpp"
 #include "FramePreparer.hpp"
 #include "BallDetector.hpp"
 
 #include <memory>
 #include <cv.h>
+#include <highgui.h>
 #include <cvblob.h>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    BallDetectionTest();
-
     unique_ptr<FramePreparer> framePreparer(new FramePreparer);
     unique_ptr<BallDetector> ballDetector(new BallDetector);
 
-    unique_ptr<IplImage> sourceImage;
+    int startIndex = 1;
+    int endIndex = 217;
 
-    sourceImage = framePreparer->prepare(move(sourceImage));
-    unique_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(sourceImage));
+    for (int i = startIndex; i <= endIndex; i++) {
+        unique_ptr<IplImage> sourceImage;
+
+		stringstream ss;
+		ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
+		sourceImage = unique_ptr<IplImage>(cvLoadImage(ss.str().c_str()));
+		cout << ss.str() << endl;
+
+		if (sourceImage == NULL) {
+			cout << endl << "No image found?";
+			return -1;
+		}
+
+		sourceImage = framePreparer->prepare(move(sourceImage));
+		unique_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(sourceImage));
+    }
 
     return 0;
 }
