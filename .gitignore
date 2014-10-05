@@ -13,3 +13,6 @@ CMakeCache.txt
 # Eclipse project files
 .project
 .cproject
+
+# sample data
+frames
