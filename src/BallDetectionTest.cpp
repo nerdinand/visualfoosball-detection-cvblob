@@ -4,6 +4,7 @@
 #include <cvblob.h>
 
 #include "BallDetectionTest.hpp"
+#include "Util.hpp"
 
 using namespace cvb;
 using namespace std;
@@ -77,10 +78,8 @@ int BallDetectionTest() {
             long x = (long) (lastBlob->centroid.x - roiSize/2);
             long y = (long) (lastBlob->centroid.y - roiSize/2);
 
-            x = x > imgSize.width ? imgSize.width : x;
-            y = y > imgSize.height ? imgSize.height : y;
-            x = x < 0 ? 0 : x;
-            y = y < 0 ? 0 : y;
+            x = clamp(x, 0, imgSize.width);
+            y = clamp(y, 0, imgSize.height);
 
             regionOfInterest = cvRect(x, y, roiSize, roiSize);
 
@@ -161,17 +160,6 @@ int BallDetectionTest() {
     cout << "Successful: " << numSuccessful <<  " of " << endIndex - startIndex + 1 << " frames" << endl;
     cout << "Calc time: " << calcTime / CLOCKS_PER_SEC << endl;
     cout << "Total time: " << totalTime << endl;
-
-    while (!quit) {
-        char k = cvWaitKey(10)&0xff;
-        switch (k) {
-            case 27:
-            case 'q':
-            case 'Q':
-                quit = true;
-                break;
-        }
-    }
 
     cvDestroyAllWindows();
 
