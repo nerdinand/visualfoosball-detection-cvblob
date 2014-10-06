@@ -5,14 +5,18 @@
 #include "Util.hpp"
 
 #include <cv.h>
+#include <highgui.h>
 #include <cvblob.h>
 
 using namespace std;
 
 
-BallDetector::BallDetector() {
-	// TODO Auto-generated constructor stub
+BallDetector::BallDetector(){
+	_showDebugWindows = false;
+}
 
+BallDetector::BallDetector(bool showDebugWindows) {
+	_showDebugWindows = showDebugWindows;
 }
 
 shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter> hsvImage) {
@@ -50,23 +54,23 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 
     colorInRangeImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvInRangeS(hsvImage.get(), Config::minBallHSV, Config::maxBallHSV, colorInRangeImage.get());
-//	if (i == showIndex && showIndex != -1) {
-//		cvShowImage("In range", colorInRangeImage);
-//	}
+	if (showDebugWindows()) {
+		cvShowImage("In range", colorInRangeImage.get());
+	}
 
 	smoothedImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvSmooth(colorInRangeImage.get(), smoothedImage.get(), CV_MEDIAN, 7, 7);
-//	if (i == showIndex && showIndex != -1) {
-//		cvShowImage("Smoothed", smoothedImage);
-//	}
+	if (showDebugWindows()) {
+		cvShowImage("Smoothed", smoothedImage.get());
+	}
 
 	labelImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, IPL_DEPTH_LABEL, 1));
 	result = cvLabel(smoothedImage.get(), labelImage.get(), blobs);
 	cvFilterByArea(blobs, Config::minBallBlobSize, Config::maxBallBlobSize);
 
-//	if (i == showIndex && showIndex != -1) {
-//		cvRenderBlobs(labelImage, blobs, sourceImage, sourceImage, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
-//	}
+	if (showDebugWindows()) {
+		cvRenderBlobs(labelImage.get(), blobs, hsvImage.get(), hsvImage.get(), CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
+	}
 
 	_lastBlob = nullptr;
 
@@ -88,10 +92,10 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 		_successfulFramesCount++;
 	}
 
-//	if (i == showIndex && showIndex != -1) {
-//		cvShowImage("Original Image", sourceImage);
-//		cvShowImage("Processed Image", colorInRangeImage);
-//	}
+	if (showDebugWindows()) {
+		cvShowImage("Original Image", hsvImage.get());
+		cvShowImage("Processed Image", colorInRangeImage.get());
+	}
 
     return lastBlob;
 }

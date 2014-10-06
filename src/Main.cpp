@@ -20,6 +20,7 @@ int main(int argc, char* argv[]) {
     for (int i = startIndex; i <= endIndex; i++) {
         unique_ptr<IplImage, cvImageDeleter> sourceImage;
         unique_ptr<IplImage, cvImageDeleter> preparedImage;
+        shared_ptr<cvb::CvBlob> ballBlob;
 
 		stringstream ss;
 		ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
@@ -32,7 +33,8 @@ int main(int argc, char* argv[]) {
 		}
 
 		preparedImage = framePreparer->prepare(move(sourceImage));
-		shared_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(preparedImage));
+
+		ballBlob = ballDetector->detect(move(preparedImage));
 
 		if (ballBlob.get() != nullptr) {
 			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;
