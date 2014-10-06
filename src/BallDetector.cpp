@@ -71,7 +71,7 @@ unique_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage> hsvImage) {
 //		cvShowImage("Processed Image", colorInRangeImage);
 //	}
 
-    return lastBlob;
+    return move(lastBlob);
 }
 
 BallDetector::~BallDetector() {

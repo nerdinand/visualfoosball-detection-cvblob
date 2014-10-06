@@ -9,7 +9,7 @@ class FramePreparer {
 public:
 	FramePreparer();
 
-	std::unique_ptr<IplImage> prepare(std::unique_ptr<IplImage> sourceImage);
+	std::shared_ptr<IplImage> prepare(std::unique_ptr<IplImage> sourceImage);
 
 	virtual ~FramePreparer();
 

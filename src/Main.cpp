@@ -18,6 +18,7 @@ int main(int argc, char* argv[]) {
 
     for (int i = startIndex; i <= endIndex; i++) {
         unique_ptr<IplImage> sourceImage;
+        shared_ptr<IplImage> preparedImage;
 
 		stringstream ss;
 		ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
@@ -29,8 +30,9 @@ int main(int argc, char* argv[]) {
 			return -1;
 		}
 
-		sourceImage = framePreparer->prepare(move(sourceImage));
-		unique_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(sourceImage));
+		preparedImage = framePreparer->prepare(move(sourceImage));
+
+		//unique_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(preparedImage));
     }
 
     return 0;
