@@ -11,7 +11,7 @@ class FramePreparer {
 public:
 	FramePreparer();
 
-	std::unique_ptr<IplImage, cvImageDeleter> prepare(std::unique_ptr<IplImage, cvImageDeleter> sourceImage);
+	std::unique_ptr<IplImage, cvImageDeleter> prepare(const IplImage& sourceImage);
 
 	virtual ~FramePreparer();
 

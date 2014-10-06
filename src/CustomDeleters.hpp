@@ -10,6 +10,7 @@
 
 #include <cv.h>
 #include <cvblob.h>
+#include <highgui.h>
 
 struct cvImageDeleter{
     void operator() (IplImage* image);
@@ -17,6 +18,14 @@ struct cvImageDeleter{
 
 struct cvBlobDeleter{
     void operator() (cvb::CvBlob* blob);
+};
+
+struct cvCaptureDeleter{
+    void operator() (cv::VideoCapture* videoCapture);
+};
+
+struct cvMatDeleter{
+    void operator() (cv::Mat* mat);
 };
 
 #endif /* SRC_CUSTOMDELETERS_HPP_ */
