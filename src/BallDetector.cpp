@@ -97,7 +97,7 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 		cvShowImage("Processed Image", colorInRangeImage.get());
 	}
 
-    return lastBlob;
+    return _lastBlob;
 }
 
 BallDetector::~BallDetector() {

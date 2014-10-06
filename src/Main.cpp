@@ -33,11 +33,12 @@ int main(int argc, char* argv[]) {
 		}
 
 		preparedImage = framePreparer->prepare(move(sourceImage));
-
 		ballBlob = ballDetector->detect(move(preparedImage));
 
 		if (ballBlob.get() != nullptr) {
 			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;
+		} else {
+			cout << "I got nothing for " << ss.str() << endl;
 		}
     }
 
