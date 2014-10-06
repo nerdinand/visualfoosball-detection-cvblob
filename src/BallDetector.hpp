@@ -2,6 +2,8 @@
 #ifndef SRC_BALLDETECTOR_HPP_
 #define SRC_BALLDETECTOR_HPP_
 
+#include "CustomDeleters.hpp"
+
 #include <memory>
 #include <cv.h>
 #include <cvblob.h>
@@ -10,7 +12,7 @@ class BallDetector {
 public:
 	BallDetector();
 
-	std::unique_ptr<cvb::CvBlob> detect(std::unique_ptr<IplImage> sourceImage);
+	std::unique_ptr<cvb::CvBlob, cvBlobDeleter> detect(std::unique_ptr<IplImage, cvImageDeleter> hsvImage);
 
 	virtual ~BallDetector();
 

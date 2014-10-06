@@ -1,6 +1,7 @@
 
 #include "FramePreparer.hpp"
 #include "Config.hpp"
+#include "CustomDeleters.hpp"
 
 #include <cv.h>
 
@@ -11,12 +12,12 @@ FramePreparer::FramePreparer() {
 
 }
 
-shared_ptr<IplImage> FramePreparer::prepare(unique_ptr<IplImage> sourceImage) {
+unique_ptr<IplImage, cvImageDeleter> FramePreparer::prepare(unique_ptr<IplImage, cvImageDeleter> sourceImage) {
     CvSize imgSize = cvGetSize(sourceImage.get());
 
-    shared_ptr<IplImage> hsvImage;
+    unique_ptr<IplImage, cvImageDeleter> hsvImage;
 
-    hsvImage = shared_ptr<IplImage>(cvCreateImage(imgSize, 8, 3));
+    hsvImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 3));
     cvCvtColor(sourceImage.get(), hsvImage.get(), cv::COLOR_BGR2HSV);
 
     return hsvImage;

@@ -1,7 +1,8 @@
 
 #include "BallDetector.hpp"
-
 #include "Config.hpp"
+#include "CustomDeleters.hpp"
+
 #include <cv.h>
 #include <cvblob.h>
 
@@ -13,12 +14,12 @@ BallDetector::BallDetector() {
 
 }
 
-unique_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage> hsvImage) {
+unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter> hsvImage) {
     unique_ptr<cvb::CvBlob> cvBlob(new cvb::CvBlob());
 
-    unique_ptr<IplImage> colorInRangeImage;
-    unique_ptr<IplImage> smoothedImage;
-    unique_ptr<IplImage> labelImage;
+    unique_ptr<IplImage, cvImageDeleter> colorInRangeImage;
+    unique_ptr<IplImage, cvImageDeleter> smoothedImage;
+    unique_ptr<IplImage, cvImageDeleter> labelImage;
 
     cvb::CvBlobs blobs;
 
@@ -26,21 +27,21 @@ unique_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage> hsvImage) {
 
     CvSize imgSize = cvGetSize(hsvImage.get());
 
-    unique_ptr<cvb::CvBlob> lastBlob(nullptr);
+    unique_ptr<cvb::CvBlob, cvBlobDeleter> lastBlob(nullptr);
 
-    colorInRangeImage = unique_ptr<IplImage>(cvCreateImage(imgSize, 8, 1));
+    colorInRangeImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvInRangeS(hsvImage.get(), Config::minBallHSV, Config::maxBallHSV, colorInRangeImage.get());
 //	if (i == showIndex && showIndex != -1) {
 //		cvShowImage("In range", colorInRangeImage);
 //	}
 
-	smoothedImage = unique_ptr<IplImage>(cvCreateImage(imgSize, 8, 1));
+	smoothedImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvSmooth(colorInRangeImage.get(), smoothedImage.get(), CV_MEDIAN, 7, 7);
 //	if (i == showIndex && showIndex != -1) {
 //		cvShowImage("Smoothed", smoothedImage);
 //	}
 
-	labelImage = unique_ptr<IplImage>(cvCreateImage(imgSize, IPL_DEPTH_LABEL, 1));
+	labelImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, IPL_DEPTH_LABEL, 1));
 	result = cvLabel(smoothedImage.get(), labelImage.get(), blobs);
 	cvFilterByArea(blobs, Config::minBallBlobSize, Config::maxBallBlobSize);
 
@@ -52,7 +53,7 @@ unique_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage> hsvImage) {
 	int blobCount = 0;
 	for (cvb::CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
 	{
-		lastBlob = unique_ptr<cvb::CvBlob>(it->second);
+		lastBlob = unique_ptr<cvb::CvBlob, cvBlobDeleter>(it->second);
 
 		cv::Rect regionOfInterest = cvGetImageROI(hsvImage.get());
 		lastBlob->centroid.x += regionOfInterest.x;

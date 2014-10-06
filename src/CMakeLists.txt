@@ -15,6 +15,7 @@ set (visualfoosball-detection-cvblob_SOURCES
   "BallDetectionTest.cpp"
   "BallDetector.cpp"
   "Config.cpp"
+  "CustomDeleters.cpp"
   "FramePreparer.cpp"
   "Main.cpp"
 )
