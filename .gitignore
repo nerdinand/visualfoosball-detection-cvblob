@@ -15,4 +15,7 @@ CMakeCache.txt
 .cproject
 
 # sample data
-frames
+data
+
+# OS X metadata
+.DS_Store
