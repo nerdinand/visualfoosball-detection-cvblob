@@ -63,13 +63,8 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 	int blobCount = 0;
 	for (cvb::CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
 	{
-		lastBlob = unique_ptr<cvb::CvBlob, cvBlobDeleter>(it->second);
+		_lastBlob = unique_ptr<cvb::CvBlob, cvBlobDeleter>(it->second);
 
-		cv::Rect regionOfInterest = cvGetImageROI(hsvImage.get());
-		lastBlob->centroid.x += regionOfInterest.x;
-		lastBlob->centroid.y += regionOfInterest.y;
-
-		_lastBlob = lastBlob;
 		// cout << "Blob #" << lastBlob->label << ": Area=" << lastBlob->area << ", Centroid=(" << lastBlob->centroid.x << ", " << lastBlob->centroid.y << ")" << endl;
 		blobCount++;
 	}

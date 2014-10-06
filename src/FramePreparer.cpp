@@ -32,7 +32,7 @@ unique_ptr<IplImage, cvImageDeleter> FramePreparer::prepare(IplImage* sourceImag
 
 		regionOfInterest = cvRect(x, y, Config::ballROISize, Config::ballROISize);
 
-		cout << "ROI: " << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
+		// cout << "ROI: " << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
 
 		cvSetImageROI(sourceImage, regionOfInterest);
 	}

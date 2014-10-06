@@ -53,6 +53,11 @@ int readVideo() {
 			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;
 			lastCentroid = ballBlob->centroid;
 			successfulCount++;
+
+			cv::Rect regionOfInterest = cvGetImageROI(&sourceImageIpl);
+			ballBlob->centroid.x += regionOfInterest.x;
+			ballBlob->centroid.y += regionOfInterest.y;
+
 		} else {
 			// cout << lastCentroid.x << ", " << lastCentroid.y << endl;
 			cout << "I got nothing for frame " << frameIndex << "." << endl;
