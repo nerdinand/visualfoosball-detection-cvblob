@@ -50,13 +50,14 @@ int readVideo() {
 		detectTime += double(detectEnd - detectBegin);
 
 		if (ballBlob.get() != nullptr) {
-			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;
-			lastCentroid = ballBlob->centroid;
 			successfulCount++;
 
 			cv::Rect regionOfInterest = cvGetImageROI(&sourceImageIpl);
 			ballBlob->centroid.x += regionOfInterest.x;
 			ballBlob->centroid.y += regionOfInterest.y;
+
+			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;
+			lastCentroid = ballBlob->centroid;
 
 		} else {
 			// cout << lastCentroid.x << ", " << lastCentroid.y << endl;
