@@ -62,7 +62,7 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 	}
 
 	smoothedImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
-	cvSmooth(colorInRangeImage.get(), smoothedImage.get(), CV_MEDIAN, 7, 7);
+	cvSmooth(colorInRangeImage.get(), smoothedImage.get(), CV_MEDIAN, Config::blurSize, Config::blurSize);
 	if (showDebugWindows()) {
 		cvShowImage("Smoothed", smoothedImage.get());
 	}

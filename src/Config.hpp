@@ -20,6 +20,8 @@ public:
 
 	static const unsigned int minBallBlobSize;
 	static const unsigned int maxBallBlobSize;
+
+	static const unsigned int blurSize;
 };
 
 #endif /* SRC_CONFIG_HPP_ */

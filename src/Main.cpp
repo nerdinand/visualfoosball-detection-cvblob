@@ -33,6 +33,8 @@ int readVideo() {
 	double prepareTime;
 	double detectTime;
 
+	int frameIndex = 1;
+
 	while (capture->read(*sourceImage.get())) {
 		IplImage sourceImageIpl = IplImage(*sourceImage.get());
 		unique_ptr<IplImage, cvImageDeleter> preparedImage;
@@ -52,10 +54,12 @@ int readVideo() {
 			lastCentroid = ballBlob->centroid;
 			successfulCount++;
 		} else {
-			cout << lastCentroid.x << ", " << lastCentroid.y << endl;
-			// cout << "I got nothing for " << capture->get(CV_CAP_PROP_POS_FRAMES - 1) << endl;
+			// cout << lastCentroid.x << ", " << lastCentroid.y << endl;
+			cout << "I got nothing for frame " << frameIndex << "." << endl;
 			unsuccessfulCount++;
 		}
+
+		frameIndex++;
 
 //		break;
 	}

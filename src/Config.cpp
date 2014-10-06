@@ -12,5 +12,7 @@ const CvScalar Config::maxRedHSV = cvScalar(9, 255, 255);
 
 const int Config::ballROISize = 200;
 
-const unsigned int Config::minBallBlobSize = 200;
+const unsigned int Config::minBallBlobSize = 0;
 const unsigned int Config::maxBallBlobSize = 2000;
+
+const unsigned int Config::blurSize = 3;
