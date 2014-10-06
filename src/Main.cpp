@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 		stringstream ss;
 		ss << "frames/image-" << std::setw(3) << std::setfill('0') << i << ".png";
 		sourceImage = unique_ptr<IplImage, cvImageDeleter>(cvLoadImage(ss.str().c_str()));
-		cout << ss.str() << endl;
+		// cout << ss.str() << endl;
 
 		if (sourceImage == NULL) {
 			cout << endl << "No image found?";
@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		preparedImage = framePreparer->prepare(move(sourceImage));
-		unique_ptr<cvb::CvBlob, cvBlobDeleter> ballBlob = ballDetector->detect(move(preparedImage));
+		shared_ptr<cvb::CvBlob> ballBlob = ballDetector->detect(move(preparedImage));
 
 		if (ballBlob.get() != nullptr) {
 			cout << ballBlob->centroid.x << ", " << ballBlob->centroid.y << endl;

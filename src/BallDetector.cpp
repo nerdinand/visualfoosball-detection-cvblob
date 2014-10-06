@@ -2,6 +2,7 @@
 #include "BallDetector.hpp"
 #include "Config.hpp"
 #include "CustomDeleters.hpp"
+#include "Util.hpp"
 
 #include <cv.h>
 #include <cvblob.h>
@@ -14,9 +15,7 @@ BallDetector::BallDetector() {
 
 }
 
-unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter> hsvImage) {
-    unique_ptr<cvb::CvBlob> cvBlob(new cvb::CvBlob());
-
+shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter> hsvImage) {
     unique_ptr<IplImage, cvImageDeleter> colorInRangeImage;
     unique_ptr<IplImage, cvImageDeleter> smoothedImage;
     unique_ptr<IplImage, cvImageDeleter> labelImage;
@@ -25,9 +24,29 @@ unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage,
 
     unsigned int result = 0;
 
+    shared_ptr<cvb::CvBlob> lastBlob = _lastBlob;
+
+    cvResetImageROI(hsvImage.get());
+
     CvSize imgSize = cvGetSize(hsvImage.get());
 
-    unique_ptr<cvb::CvBlob, cvBlobDeleter> lastBlob(nullptr);
+	CvRect regionOfInterest;
+	if (lastBlob.get() != nullptr) {
+		long x = (long) (lastBlob->centroid.x - Config::ballROISize/2);
+		long y = (long) (lastBlob->centroid.y - Config::ballROISize/2);
+
+		x = Util::clamp(x, 0, imgSize.width);
+		y = Util::clamp(y, 0, imgSize.height);
+
+		regionOfInterest = cvRect(x, y, Config::ballROISize, Config::ballROISize);
+
+		// cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
+
+		cvSetImageROI(hsvImage.get(), regionOfInterest);
+	}
+
+    imgSize = cvGetSize(hsvImage.get());
+
 
     colorInRangeImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvInRangeS(hsvImage.get(), Config::minBallHSV, Config::maxBallHSV, colorInRangeImage.get());
@@ -49,7 +68,8 @@ unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage,
 //		cvRenderBlobs(labelImage, blobs, sourceImage, sourceImage, CV_BLOB_RENDER_BOUNDING_BOX | CV_BLOB_RENDER_TO_STD, 1.);
 //	}
 
-	lastBlob = NULL;
+	_lastBlob = nullptr;
+
 	int blobCount = 0;
 	for (cvb::CvBlobs::const_iterator it=blobs.begin(); it!=blobs.end(); ++it)
 	{
@@ -59,7 +79,8 @@ unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage,
 		lastBlob->centroid.x += regionOfInterest.x;
 		lastBlob->centroid.y += regionOfInterest.y;
 
-		cout << "Blob #" << lastBlob->label << ": Area=" << lastBlob->area << ", Centroid=(" << lastBlob->centroid.x << ", " << lastBlob->centroid.y << ")" << endl;
+		_lastBlob = lastBlob;
+		// cout << "Blob #" << lastBlob->label << ": Area=" << lastBlob->area << ", Centroid=(" << lastBlob->centroid.x << ", " << lastBlob->centroid.y << ")" << endl;
 		blobCount++;
 	}
 
@@ -72,7 +93,7 @@ unique_ptr<cvb::CvBlob, cvBlobDeleter> BallDetector::detect(unique_ptr<IplImage,
 //		cvShowImage("Processed Image", colorInRangeImage);
 //	}
 
-    return move(lastBlob);
+    return lastBlob;
 }
 
 BallDetector::~BallDetector() {
