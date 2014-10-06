@@ -10,10 +10,22 @@
 class FramePreparer {
 public:
 	FramePreparer();
+	FramePreparer(bool showDebugWindows);
 
 	std::unique_ptr<IplImage, cvImageDeleter> prepare(const IplImage& sourceImage);
 
+	bool showDebugWindows() const {
+		return _showDebugWindows;
+	}
+
+	void setShowDebugWindows(bool showDebugWindows) {
+		_showDebugWindows = showDebugWindows;
+	}
+
 	virtual ~FramePreparer();
+
+private:
+	bool _showDebugWindows;
 
 };
 

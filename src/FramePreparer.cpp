@@ -7,13 +7,20 @@
 
 using namespace std;
 
-FramePreparer::FramePreparer() {
-	// TODO Auto-generated constructor stub
+FramePreparer::FramePreparer(){
+	_showDebugWindows = false;
+}
 
+FramePreparer::FramePreparer(bool showDebugWindows) {
+	_showDebugWindows = showDebugWindows;
 }
 
 unique_ptr<IplImage, cvImageDeleter> FramePreparer::prepare(const IplImage& sourceImage) {
     CvSize imgSize = cvGetSize(&sourceImage);
+
+	if (showDebugWindows()) {
+		cvShowImage("Source", &sourceImage);
+	}
 
     unique_ptr<IplImage, cvImageDeleter> hsvImage;
 

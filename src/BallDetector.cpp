@@ -51,6 +51,9 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 
     imgSize = cvGetSize(hsvImage.get());
 
+	if (showDebugWindows()) {
+		cvShowImage("HSV", hsvImage.get());
+	}
 
     colorInRangeImage = unique_ptr<IplImage, cvImageDeleter>(cvCreateImage(imgSize, 8, 1));
 	cvInRangeS(hsvImage.get(), Config::minBallHSV, Config::maxBallHSV, colorInRangeImage.get());
@@ -90,11 +93,6 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 
 	if (blobCount == 1) {
 		_successfulFramesCount++;
-	}
-
-	if (showDebugWindows()) {
-		cvShowImage("Original Image", hsvImage.get());
-		cvShowImage("Processed Image", colorInRangeImage.get());
 	}
 
     return _lastBlob;
