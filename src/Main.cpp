@@ -40,7 +40,7 @@ int readVideo() {
 		unique_ptr<IplImage, cvImageDeleter> preparedImage;
 
 		clock_t prepareBegin = clock();
-		preparedImage = framePreparer->prepare(sourceImageIpl);
+		preparedImage = framePreparer->prepare(&sourceImageIpl, ballBlob.get());
 		clock_t prepareEnd = clock();
 		prepareTime += double(prepareEnd - prepareBegin);
 

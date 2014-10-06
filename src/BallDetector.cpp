@@ -34,23 +34,6 @@ shared_ptr<cvb::CvBlob> BallDetector::detect(unique_ptr<IplImage, cvImageDeleter
 
     CvSize imgSize = cvGetSize(hsvImage.get());
 
-	CvRect regionOfInterest;
-	if (lastBlob.get() != nullptr) {
-		long x = (long) (lastBlob->centroid.x - Config::ballROISize/2);
-		long y = (long) (lastBlob->centroid.y - Config::ballROISize/2);
-
-		x = Util::clamp(x, 0, imgSize.width);
-		y = Util::clamp(y, 0, imgSize.height);
-
-		regionOfInterest = cvRect(x, y, Config::ballROISize, Config::ballROISize);
-
-		// cout << regionOfInterest.x << " " << regionOfInterest.y << " " << regionOfInterest.width << " " << regionOfInterest.height << endl;
-
-		cvSetImageROI(hsvImage.get(), regionOfInterest);
-	}
-
-    imgSize = cvGetSize(hsvImage.get());
-
 	if (showDebugWindows()) {
 		cvShowImage("HSV", hsvImage.get());
 	}

@@ -6,13 +6,14 @@
 
 #include <memory>
 #include <cv.h>
+#include <cvblob.h>
 
 class FramePreparer {
 public:
 	FramePreparer();
 	FramePreparer(bool showDebugWindows);
 
-	std::unique_ptr<IplImage, cvImageDeleter> prepare(const IplImage& sourceImage);
+	std::unique_ptr<IplImage, cvImageDeleter> prepare(IplImage* sourceImage, const cvb::CvBlob* ballBlob);
 
 	bool showDebugWindows() const {
 		return _showDebugWindows;
