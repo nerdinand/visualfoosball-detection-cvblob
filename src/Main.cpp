@@ -30,8 +30,11 @@ int readVideo() {
 	int successfulCount = 0;
 	int unsuccessfulCount = 0;
 
+	double totalTime;
 	double prepareTime;
 	double detectTime;
+
+	clock_t totalBegin = clock();
 
 	int frameIndex = 1;
 
@@ -70,6 +73,8 @@ int readVideo() {
 //		break;
 	}
 
+	clock_t totalEnd = clock();
+
 	cout << "Done." << endl;
 
 	int totalCount = successfulCount + unsuccessfulCount;
@@ -78,6 +83,7 @@ int readVideo() {
 	cout << unsuccessfulCount << " unsuccessful frames." << endl;
 	cout << totalCount << " total frames." << endl;
 
+	cout << (totalEnd - totalBegin) / CLOCKS_PER_SEC << "s total processing time." << endl;
 	cout << prepareTime / CLOCKS_PER_SEC << "s prepare time." << endl;
 	cout << detectTime / CLOCKS_PER_SEC << "s detect time." << endl;
 	cout << (prepareTime + detectTime) / CLOCKS_PER_SEC / totalCount << "s average processing per frame." << endl;
