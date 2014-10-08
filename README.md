@@ -10,7 +10,7 @@ Dependencies
 
 On a Mac, just
 
-    brew tap homebrew/science
+    brew tap nerdinand/homebrew-science
     brew install opencv cvblob
 
 Building
