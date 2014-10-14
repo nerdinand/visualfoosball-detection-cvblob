@@ -11,6 +11,45 @@
 
 using namespace std;
 
+int readWebcam() {
+	const char* cameraOutputWindow = "camera";
+
+    CvCapture *camCapture;
+    int ret = 0;
+
+    if (!(camCapture = cvCaptureFromCAM(1))) {
+        cout << "Failed to capture from camera" << endl;
+
+        ret = 1;
+
+        return -1;
+    }
+
+    cout << "Camera opened successfully" << endl;
+
+    cvNamedWindow(cameraOutputWindow, CV_WINDOW_AUTOSIZE);
+
+    IplImage *cameraFrame;
+    int grabFrameRet;
+
+    while (true) {
+        if ((cameraFrame = cvQueryFrame(camCapture))) {
+            cvShowImage(cameraOutputWindow, cameraFrame);
+        }
+
+        if (cvWaitKey(60) != -1) {
+            cout << "Input" << endl;
+            break;
+        }
+    }
+
+    cout << "Done" << endl;
+
+    cvReleaseCapture(&camCapture);
+    cvDestroyWindow(cameraOutputWindow);
+    return ret;
+}
+
 int readVideo() {
 	bool showDebugWindows = false;
 
@@ -136,4 +175,5 @@ int readVideo() {
 int main(int argc, char* argv[]) {
 //	return readFrames();
 	return readVideo();
+//	return readWebcam();
 }
